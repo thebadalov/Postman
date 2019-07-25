@@ -36,7 +36,7 @@ export default {
       const vm = this;
 
       const response = await fetch("http://localhost:62324/api/users", {
-      
+        
        method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, cors, *same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

@@ -98,6 +98,23 @@ export default {
       } else {
         console.log("Match is false!!!", false);
       }
+    },
+      async onlogin() {
+      const vm = this;
+
+      const response = await fetch("http://localhost:62324/api/users", {
+        
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        referrer: "no-referrer" // no-referrer, *client
+      }); // parses JSON response into native JavaScript objects
+
+      var result = await response.json();
     }
   }
 };
