@@ -14,13 +14,13 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: home
-    },
-    {
-      path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: home
     },
     {
       path: '/signup',
@@ -38,7 +38,12 @@ const router = new Router({
 new Vue({
   el: '#app',
   router,
-  render: h => h(App) 
+  render: h => h(App),
+  data() {
+    return {
+      user: { }
+    }
+  }
 })
 
 import home from '@/pages/Home.vue'

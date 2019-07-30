@@ -13,24 +13,49 @@
       <h1 class="display-3">POSTMAN Sign up</h1>
     </section>
     <form class="form-signin">
-      <input type="text" id="inputName" class="text-center" placeholder="Name" required />
+      <input
+        v-model="input.name"
+        type="text"
+        id="inputName"
+        class="text-center"
+        placeholder="Name"
+        required
+      />
       <!-- Name -->
       <label for="inputName" class="sr-only">Name</label>
       <br />
-      <input type="text" id="inputSurname" class="text-center" placeholder="Surname" required />
+      <input
+        v-model="input.surname"
+        type="text"
+        id="inputSurname"
+        class="text-center"
+        placeholder="Surname"
+        required
+      />
       <!-- Surname -->
       <label for="inputSurname" class="sr-only">Surname</label>
       <br />
-      <input type="date" id="inputBday" class="text-center" placeholder="Birthday" required />
+      <input
+        v-model="input.date"
+        type="date"
+        id="inputBday"
+        class="text-center"
+        placeholder="Birthday"
+        required
+      />
       <!-- Bday -->
       <label for="inputBday" class="sr-only">Birthday</label>
       <br />
-      <input type="email" id="inputEmail" class="text-center" placeholder="Email address" required />
-      <br />
-      <!--Phone Number-->
-      <input type="tel" id="inputTel" class="text-center" placeholder="Phone Number" required />
-      <!-- Email -->
+      <input
+        v-model="input.email"
+        type="email"
+        id="inputEmail"
+        class="text-center"
+        placeholder="Email address"
+        required
+      />
       <label for="inputEmail" class="sr-only">Email address</label>
+      <!-- Email -->
       <br />
       <label for="inputNewpassword" class="sr-only">New password</label>
       <!-- New Password -->
@@ -71,10 +96,19 @@
 </template>
 
 <script>
+import defaultMixin from "@/mixins/default";
+
 export default {
+  mixins: [defaultMixin],
+
   data() {
     return {
+      apiKey: "users/register",
       input: {
+        name: "",
+        surname: "",
+        date: "",
+        email: "",
         password: "",
         againpassword: ""
       }
@@ -92,29 +126,25 @@ export default {
     }
   },
   methods: {
-    onlogin() {
+    async onlogin() {
       if (this.input.password === this.input.againpassword) {
         console.log("Match is true!!!", true);
+        const vm = this;
+
+        const data = {
+          name: vm.input.name,
+          surname: vm.input.surname,
+          date: vm.input.date,
+          mail: vm.input.email,
+          password: vm.input.password
+        };
+
+        await vm.postData(data);
+        alert("Your signup operation was succesfull!")
+        window.open("/")
       } else {
         console.log("Match is false!!!", false);
       }
-    },
-      async onlogin() { 
-      const vm = this;
-
-      const response = await fetch("http://localhost:62324/api/users", {
-        
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-        },
-        referrer: "no-referrer" // no-referrer, *client
-      }); // parses JSON response into native JavaScript objects
-
-      var result = await response.json();
     }
   }
 };

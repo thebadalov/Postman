@@ -5,26 +5,37 @@
       <!--Navbar Part-->
       <a class="navbar-brand" href="#"></a>
 
-      <ul class="nav nav-tabs" >
+      <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" href="#" id="menu">
+          <a class="nav-link" href="#" style="color:aliceblue">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/mobile-home.png" />
             Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link"  @click="$router.push('login')" id="menu" style="cursor: pointer">Login</a>
+          <a
+            class="nav-link"
+            tabindex="-1"
+            aria-disabled="true"
+            @click="$router.push('info')"
+            style="cursor: pointer; color:aliceblue"
+          >
+            <img src="https://img.icons8.com/windows/32/000000/info.png" />Info
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" @click="$router.push('signup')" style="cursor: pointer" id="menu">Sign Up</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" tabindex="-1" aria-disabled="true"  @click="$router.push('info')" style="cursor: pointer" id="menu">Info</a>
+          <a class="nav-link" @click="$router.push('/')" style="cursor: pointer; color:aliceblue">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/exit.png" />
+            Exit
+          </a>
         </li>
       </ul>
       <!--Icon Part-->
       <a href class="navbar-brand">
-        <i class="fas fa-binoculars mr-2"></i> POSTMAN
+        <i class="fas fa-binoculars mr-2"></i>
+        {{ $root.user && $root.user.name + ' ' + $root.user.surname}}
       </a>
       <!--Search Part-->
       <form class="form-inline">
@@ -43,41 +54,12 @@
     <section id="gallery">
       <div class="container">
         <div class="row">
-          <div class="col-lg-4 mb-4">
+          <div v-for="item in blogItems" :key="item.id" class="col-lg-4 mb-4">
             <div class="card">
-              <img class="card-img-top" src="../imgs/pattern1.jpeg" alt />
+              <img class="card-img-top" :src="item.url" alt />
               <div class="card-body">
-                <h5 class="card-title">Elon Mask</h5>
-                <p class="card-text">
-                  If something is important enough YOU SHOULD TRY even if the
-                  probable outcome is FAILURE
-                </p>
-                <a href class="btn btn-outline-success btn-sm">Download</a>
-                <a href class="btn btn-outline-danger btn-sm">
-                  <i class="far fa-heart"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-4">
-            <div class="card">
-              <img class="card-img-top" src="../imgs/pattern2.jpeg" alt />
-              <div class="card-body">
-                <h5 class="card-title">Steve Jobs</h5>
-                <p class="card-text">Details matter, it's worth waiting to get it right.</p>
-                <a href class="btn btn-outline-success btn-sm">Download</a>
-                <a href class="btn btn-outline-danger btn-sm">
-                  <i class="far fa-heart"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-4">
-            <div class="card">
-              <img class="card-img-top" src="../imgs/pattern3.jpeg" alt />
-              <div class="card-body">
-                <h5 class="card-title">Corey Ferdman</h5>
-                <p class="card-text">I have led a pretty colorful life!</p>
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.writing}}</p>
                 <a href class="btn btn-outline-success btn-sm">Download</a>
                 <a href class="btn btn-outline-danger btn-sm">
                   <i class="far fa-heart"></i>
@@ -89,20 +71,40 @@
       </div>
     </section>
   </div>
-
 </body>
 </template>
 
 <script>
+import defaultMixin from "@/mixins/default";
 export default {
-  
+  mixins: [defaultMixin],
+  computed: {
+    blogItems() {
+      const vm = this;
+
+      return vm.blogDataItems;
+    }
+  },
+
+  created() {
+    const vm = this;
+    if (!vm.$root.user.hasOwnProperty("password")) {
+      vm.$router.push("/");
+    }
+    vm.getData();
+  },
+  data() {
+    return {
+      apiKey: "blogs"
+    };
+  },
 };
 </script>
 <style>
 #header {
   background: url("../imgs/header.jpeg");
 }
-#menu{
-    color:aliceblue;
+#menu {
+  color: aliceblue !important;
 }
-</style>
+
